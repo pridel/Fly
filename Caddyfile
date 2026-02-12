@@ -1,0 +1,9 @@
+*.fly.dev {
+    tls
+    forward_proxy {
+        basic_auth {env.PROXY_USER} {env.PROXY_PASS}
+        hide_ip
+        hide_via
+        probe_resistance
+    }
+}
