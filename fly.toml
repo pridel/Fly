@@ -1,4 +1,4 @@
-app = "naive-proxy"  # ✅ 关键：固定应用名（每次部署更新同一应用）
+app = "naive-proxy"
 primary_region = "sin"
 kill_signal = "SIGINT"
 kill_timeout = 5
