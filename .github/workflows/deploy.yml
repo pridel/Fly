@@ -1,0 +1,28 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ✅ 修复：自动获取 GitHub Actions IP
+      - name: Get current IP
+        id: ip
+        run: echo "IP=$(curl -s ifconfig.me)" >> $GITHUB_ENV
+
+      # ✅ 修复：使用正确命令
+      - name: Set up Fly.io CLI
+        uses: fly-apps/flyctl-github-action@v1
+        with:
+          api_token: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Deploy to Fly.io
+        run: |
+          sed -i "s|remote_ip YOUR_IP/32|remote_ip ${{ env.IP }}/32|g" Caddyfile
+          fly deploy --remote-only
+          echo "Deployment successful!"
